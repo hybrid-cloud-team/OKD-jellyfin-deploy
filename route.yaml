@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: jellyfin-win
+  namespace: jellyfin
+spec:
+  host: service.jellystream.win  # Cloudflare Tunnel이 바라보고 있는 실제 주소
+  to:
+    kind: Service
+    name: jellyfin
+  port:
+    targetPort: 8096-tcp
+  wildcardPolicy: None

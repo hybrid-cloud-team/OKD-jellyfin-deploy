@@ -27,7 +27,7 @@ spec:
       containers:
       - name: jellyfin
         # 이 주소는 젠킨스가 빌드 후 자동으로 바꿀 예정입니다.
-        image: default-route-openshift-image-registry.apps.okd4.cluster.local/jellyfin/jellyfin:17
+        image: default-route-openshift-image-registry.apps.okd4.cluster.local/jellyfin/jellyfin:18
         ports:
         - containerPort: 8096
           protocol: TCP

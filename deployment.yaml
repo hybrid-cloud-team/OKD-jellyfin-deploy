@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+  namespace: jellyfin
+  labels:
+    app: jellyfin
+    app.kubernetes.io/component: jellyfin
+    app.kubernetes.io/instance: jellyfin
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      deployment: jellyfin
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        deployment: jellyfin
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+    spec:
+      containers:
+      - name: jellyfin
+        # 이 주소는 젠킨스가 빌드 후 자동으로 바꿀 예정입니다.
+        image: image-registry.openshift-image-registry.svc:5000/jellyfin/jellyfin:latest
+        ports:
+        - containerPort: 8096
+          protocol: TCP
+        volumeMounts:
+        - name: jellyfin-media
+          mountPath: /cache
+          subPath: cache
+        - name: jellyfin-media
+          mountPath: /config
+          subPath: config
+        - name: jellyfin-media
+          mountPath: /media
+          subPath: media
+      volumes:
+      - name: jellyfin-media
+        persistentVolumeClaim:
+          claimName: jellyfin-pvc
